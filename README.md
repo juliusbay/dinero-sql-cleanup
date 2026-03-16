@@ -37,9 +37,9 @@ _4. Lav et udtræk af kunder fra databasen og gem filen i script-mappen med navn
 _9. Map dinero handles ud fra id:_
     
     UPDATE cc
-SET cc.dinero_handle = dtc.dinero_handle
-FROM cust_customer AS cc
-INNER JOIN dinero_temp_cleanup AS dtc
+    SET cc.dinero_handle = dtc.dinero_handle
+    FROM cust_customer AS cc
+    INNER JOIN dinero_temp_cleanup AS dtc
     ON cc.id = dtc.customer_id
     
 _10. Slet rows uden dinero_handle i employee_type_customers:_
