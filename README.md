@@ -14,6 +14,7 @@ Rækkerne sorteres, så den kanoniske kunde altid står øverst i hver gruppe, h
 Filen kan derefter bruges til at slå dubletter sammen eller synkronisere data med andre systemer som for eksempel Dinero.
 
 **🔧 Trin-for-trin guide**
+
 _1. Opret en backup i SQL Server Management Studio.
 
 2. Kør kundesynkronisering via Action Board.
