@@ -44,46 +44,46 @@ _9. Map dinero handles ud fra id:_
     
 _10. Slet rows uden dinero_handle i employee_type_customers:_
 
-  DELETE etc
-  FROM employee_type_customer etc
-  INNER JOIN cust_customer c
-  ON etc.customer_id = c.id
-  WHERE c.dinero_handle IS NULL
+      DELETE etc
+      FROM employee_type_customer etc
+      INNER JOIN cust_customer c
+      ON etc.customer_id = c.id
+      WHERE c.dinero_handle IS NULL
 
 _11. Opdater customer-id i cases/offers/customer_comments/assets/cust_delivery_addresses (du kan bare erstatte tabel-navnet nede i statementet):_
 
     UPDATE c
-SET c.customer_id = dtc.canonical_customer_id
-FROM cases AS c
-INNER JOIN dinero_temp_cleanup AS dtc
+    SET c.customer_id = dtc.canonical_customer_id
+    FROM cases AS c
+    INNER JOIN dinero_temp_cleanup AS dtc
     ON c.customer_id = dtc.customer_id
 
 _12. Map kundenumre til canonical kundenummer i invoice:_
 
     UPDATE c
-SET c.customer_number = dtc.canonical_customer_number
-FROM invoice AS c
-INNER JOIN dinero_temp_cleanup AS dtc
+    SET c.customer_number = dtc.canonical_customer_number
+    FROM invoice AS c
+    INNER JOIN dinero_temp_cleanup AS dtc
     ON c.customer_number = dtc.customer_number
 
 _13. Map leverandørnumre til canonical leverandørnummer i creditor_invoice_header:_
 
     UPDATE c
-SET c.creditor_number = dtc.canonical_customer_number
-FROM creditor_invoice_header AS c
-INNER JOIN dinero_temp_cleanup AS dtc
+    SET c.creditor_number = dtc.canonical_customer_number
+    FROM creditor_invoice_header AS c
+    INNER JOIN dinero_temp_cleanup AS dtc
     ON c.creditor_number = dtc.customer_number
 
 _14. Slet kunder med dinero handle NULL_
         
-  DELETE FROM cust_customer
-  WHERE dinero_handle IS NULL
+      DELETE FROM cust_customer
+      WHERE dinero_handle IS NULL
 
 _15.	Opdater dinero_handle ‘unik’ til NULL_
 
-  UPDATE cust_customer
-  SET dinero_handle = NULL
-  WHERE dinero_handle = ’unik’
+      UPDATE cust_customer
+      SET dinero_handle = NULL
+      WHERE dinero_handle = ’unik’
 
 _16. Lav nyt udtræk af ordrer og fakturaer og sæt før-filen ved siden af efter-filen_
 
