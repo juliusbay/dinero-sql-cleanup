@@ -15,20 +15,26 @@ Filen kan derefter bruges til at slå dubletter sammen eller synkronisere data m
 
 **🔧 Trin-for-trin guide**
 _1. Opret en backup i SQL Server Management Studio.
+
 2. Kør kundesynkronisering via Action Board.
+
 3. Eksporter følgende til Excel:
     Ordrer
     Kundefakturaer
     Leverandører
     Leverandørfakturaer_
 
-_7. Lav et udtræk af kunder fra databasen og gem filen i script-mappen med navnet 'customers'.
-8. Kør scriptet fra scriptmappen (python3 dinero_mapping_temp_table.py)
-10. Opret en ny tabel i databasen kaldet dinero_temp_cleanup.
-11. Importer output-fil til ny tabel
-12. Husk at tilføj flueben ved “Set empty strings to NULL” under import._
+_4. Lav et udtræk af kunder fra databasen og gem filen i script-mappen med navnet 'customers'.
 
-_13. Map dinero handles ud fra id:_
+5. Kør scriptet fra scriptmappen (python3 dinero_mapping_temp_table.py)
+   
+6. Opret en ny tabel i databasen kaldet dinero_temp_cleanup.
+    
+7. Importer output-fil til ny tabel
+    
+8. Husk at tilføj flueben ved “Set empty strings to NULL” under import._
+
+_9. Map dinero handles ud fra id:_
     
     UPDATE cc
 SET cc.dinero_handle = dtc.dinero_handle
@@ -36,7 +42,7 @@ FROM cust_customer AS cc
 INNER JOIN dinero_temp_cleanup AS dtc
     ON cc.id = dtc.customer_id
     
-_14. Slet rows uden dinero_handle i employee_type_customers:_
+_10. Slet rows uden dinero_handle i employee_type_customers:_
 
   DELETE etc
   FROM employee_type_customer etc
@@ -44,7 +50,7 @@ _14. Slet rows uden dinero_handle i employee_type_customers:_
   ON etc.customer_id = c.id
   WHERE c.dinero_handle IS NULL
 
-_15. Opdater customer-id i cases/offers/customer_comments/assets/cust_delivery_addresses (du kan bare erstatte tabel-navnet nede i statementet):_
+_11. Opdater customer-id i cases/offers/customer_comments/assets/cust_delivery_addresses (du kan bare erstatte tabel-navnet nede i statementet):_
 
     UPDATE c
 SET c.customer_id = dtc.canonical_customer_id
@@ -52,7 +58,7 @@ FROM cases AS c
 INNER JOIN dinero_temp_cleanup AS dtc
     ON c.customer_id = dtc.customer_id
 
-_16. Map kundenumre til canonical kundenummer i invoice:_
+_12. Map kundenumre til canonical kundenummer i invoice:_
 
     UPDATE c
 SET c.customer_number = dtc.canonical_customer_number
@@ -60,7 +66,7 @@ FROM invoice AS c
 INNER JOIN dinero_temp_cleanup AS dtc
     ON c.customer_number = dtc.customer_number
 
-_17. Map leverandørnumre til canonical leverandørnummer i creditor_invoice_header:_
+_13. Map leverandørnumre til canonical leverandørnummer i creditor_invoice_header:_
 
     UPDATE c
 SET c.creditor_number = dtc.canonical_customer_number
@@ -68,24 +74,24 @@ FROM creditor_invoice_header AS c
 INNER JOIN dinero_temp_cleanup AS dtc
     ON c.creditor_number = dtc.customer_number
 
-_18. Slet kunder med dinero handle NULL_
+_14. Slet kunder med dinero handle NULL_
         
   DELETE FROM cust_customer
   WHERE dinero_handle IS NULL
 
-_19. 16.	Opdater dinero_handle ‘unik’ til NULL_
+_15.	Opdater dinero_handle ‘unik’ til NULL_
 
   UPDATE cust_customer
   SET dinero_handle = NULL
   WHERE dinero_handle = ’unik’
 
-_20. Lav nyt udtræk af ordrer og fakturaer og sæt før-filen ved siden af efter-filen_
+_16. Lav nyt udtræk af ordrer og fakturaer og sæt før-filen ved siden af efter-filen_
 
-_21. Sortér på id/ordrenummer/fakturanummer fra lavest til højest i begge filer, så de er sorteret ens_
+_17. Sortér på id/ordrenummer/fakturanummer fra lavest til højest i begge filer, så de er sorteret ens_
 
-_22. Kopier navne fra før-fil til efter-fil i en ny kolonne og sammenlign med nedenstående formel_
+_18. Kopier navne fra før-fil til efter-fil i en ny kolonne og sammenlign med nedenstående formel_
 
-_23. Lav ny kolonne og tjek for afvigelser med nedenstående formel. Alle skal være OK, evt. afvigelser burde kun skyldes mellemrum i navne. Juster formel efter før- og efter-kolonners placering_
+_19. Lav ny kolonne og tjek for afvigelser med nedenstående formel. Alle skal være OK, evt. afvigelser burde kun skyldes mellemrum i navne. Juster formel efter før- og efter-kolonners placering_
     
   = IF(B2 = C2; "OK"; "AFVIGELSE")
 
