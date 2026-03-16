@@ -15,25 +15,25 @@ Filen kan derefter bruges til at slå dubletter sammen eller synkronisere data m
 
 **🔧 Trin-for-trin guide**
 
-_1. Opret en backup i SQL Server Management Studio.
+__1. Opret en backup i SQL Server Management Studio._
 
-2. Kør kundesynkronisering via Action Board.
+_2. Kør kundesynkronisering via Action Board._
 
-3. Eksporter følgende til Excel:
+_3. Eksporter følgende til Excel:_
     Ordrer
     Kundefakturaer
     Leverandører
-    Leverandørfakturaer_
+    Leverandørfakturaer
 
-_4. Lav et udtræk af kunder fra databasen og gem filen i script-mappen med navnet 'customers'.
+__4. Lav et udtræk af kunder fra databasen og gem filen i script-mappen med navnet 'customers'._
 
-5. Kør scriptet fra scriptmappen (python3 dinero_mapping_temp_table.py)
+_5. Kør scriptet fra scriptmappen (python3 dinero_mapping_temp_table.py)_
    
-6. Opret en ny tabel i databasen kaldet dinero_temp_cleanup.
+_6. Opret en ny tabel i databasen kaldet dinero_temp_cleanup._
     
-7. Importer output-fil til ny tabel
+_7. Importer output-fil til ny tabel_
     
-8. Husk at tilføj flueben ved “Set empty strings to NULL” under import._
+_8. Husk at tilføj flueben ved “Set empty strings to NULL” under import.__
 
 _9. Map dinero handles ud fra id:_
     
